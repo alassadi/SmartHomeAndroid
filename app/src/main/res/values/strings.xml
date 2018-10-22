@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">SmartHome</string>
+    <string name="email_prompt">Enter email address</string>
+    <string name="password_prompt">Enter password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="indoor_lights">Indoor lights</string>
+    <string name="outdoor_lights">Outdoor lights</string>
+    <string name="temp_text">Temperature: </string>
+    <string name="temp_value"></string>
 </resources>

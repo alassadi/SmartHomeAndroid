@@ -1,0 +1,145 @@
+package marbac.smarthome;
+
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+public class LoginActivity extends AppCompatActivity {
+
+    private static final String TAG = LoginActivity.class.getSimpleName();
+
+    //UI
+    private Button loginButton;
+    private ProgressBar progressBar;
+    private EditText emailEditText, passwordEditText;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        loginButton = findViewById(R.id.loginButton);
+        progressBar = findViewById(R.id.progressBar);
+        emailEditText = findViewById(R.id.emailEditText);
+        passwordEditText = findViewById(R.id.passwordEditText);
+
+        progressBar.setVisibility(View.GONE);
+
+        loginButton.setOnClickListener(
+                new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptLogin();
+            }
+        });
+    }
+
+    public void attemptLogin(){
+
+        //reset errors
+        emailEditText.setError(null);
+        passwordEditText.setError(null);
+
+        String email, password;
+        boolean cancel = false;
+
+        email = emailEditText.getText().toString();
+        password = passwordEditText.getText().toString();
+
+        /*
+        //disabled for faster testing
+
+        if (!(email.contains("@") && email.length() > 5)){
+            //email invalid
+            emailEditText.setError("email invalid, try again");
+            cancel = true;
+        }
+
+        if (!(password.length() > 4)){
+            passwordEditText.setError("password too short, try again");
+            cancel = true;
+        }
+
+
+        if (cancel){
+
+        }else {
+            progressBar.setVisibility(View.VISIBLE);
+            UserLoginTask userLoginTask = new UserLoginTask(email, password);
+            userLoginTask.execute((Void) null);
+        }
+        */
+
+        progressBar.setVisibility(View.VISIBLE);
+        UserLoginTask userLoginTask = new UserLoginTask(email, password);
+        userLoginTask.execute((Void) null);
+
+    }
+
+
+
+    public class UserLoginTask extends AsyncTask<Void, Void, Boolean>{
+        private final String email;
+        private final String password;
+
+        public UserLoginTask(String email, String password){
+            this.email = email;
+            this.password = password;
+        }
+
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            /*
+            send login request with HttpHandler
+            return true if login was verified
+            if(httpHandler.verifyEmail(email, password)){return true;}
+
+            */
+
+            try{
+                //simulate login verification
+                Thread.sleep(2000);
+                Log.i(TAG, "verified email : " + email);
+            }catch (InterruptedException e){
+                Log.e(TAG, "InterruptedException: " + e.getMessage());
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean verified) {
+
+            if (verified){
+                //start new activity
+                progressBar.setVisibility(View.GONE);
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                /*
+                intent.putExtra("email", email);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                */
+                startActivity(intent);
+                finish();
+            }else {
+                passwordEditText.setError("Password is incorrect, try again");
+                passwordEditText.requestFocus();
+
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            Toast.makeText(getApplicationContext(), "Login cancelled", Toast.LENGTH_SHORT);
+        }
+    }
+
+
+}
