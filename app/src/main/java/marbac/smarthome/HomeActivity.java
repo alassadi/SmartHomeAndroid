@@ -10,6 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,11 +36,14 @@ public class HomeActivity extends AppCompatActivity {
 
         indoorLightSwitch = findViewById(R.id.switchIndoorLights);
         outdoorLightSwitch = findViewById(R.id.switchOutdoorLights);
+        //TODO add fire+burglar alarm
+
         tempValueText = findViewById(R.id.tempValueText);
         progressBar = findViewById(R.id.progressBar);
 
         progressBar.setVisibility(View.VISIBLE);
         new requestGetJSON().execute();
+
 
         indoorLightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -46,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
                 try {
                     jsonObject.put("indoorLights", isChecked);
 
-                    new requestPostJSON().execute();
+                    new requestPutJSON().execute();
                 } catch (JSONException e) {
                     Log.e(TAG, "error writing to JSONobject: + " + e.getMessage());
                 }
@@ -59,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
                 try {
                     jsonObject.put("outdoorLights", isChecked);
 
-                    new requestPostJSON().execute();
+                    new requestPutJSON().execute();
                 } catch (JSONException e) {
                     Log.e(TAG, "error writing to JSONobject: + " + e.getMessage());
                 }
@@ -68,7 +73,14 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    //Background thread to handle http request to server
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //@TODO refreshUi();
+    }
+
+    //Background thread to handle http GET request to server
     private class requestGetJSON extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -77,16 +89,12 @@ public class HomeActivity extends AppCompatActivity {
             HttpHandler httpHandler = new HttpHandler();
             String jsonString = httpHandler.reqGetJsonString(API_URL);
 
-            if (jsonString != null) {
                 try {
-                    //store json
                     jsonObject = new JSONObject(jsonString);
                 } catch (JSONException e) {
                     Log.e(TAG, "JSON parsing error: " + e.getMessage());
                 }
-            } else {
-                Log.e(TAG, "Failed to read JSON from server");
-            }
+
             return null;
         }
 
@@ -110,7 +118,8 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private class requestPostJSON extends AsyncTask<Void, Void, Void> {
+    //Background thread to handle http PUT request to server
+    private class requestPutJSON extends AsyncTask<Void, Void, Void> {
 
 
         @Override
@@ -127,7 +136,9 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         protected void onCancelled() {
-            Log.e(TAG, "post request cancelled");
+            Log.e(TAG, "put request cancelled");
         }
     }
+
+
 }

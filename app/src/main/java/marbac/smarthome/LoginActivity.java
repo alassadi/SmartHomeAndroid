@@ -20,7 +20,6 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private EditText emailEditText, passwordEditText;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 /*
-                intent.putExtra("email", email);
+                intent.putExtra("user", email);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 */
                 startActivity(intent);

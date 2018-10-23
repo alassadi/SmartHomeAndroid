@@ -1,5 +1,6 @@
 package marbac.smarthome;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -35,7 +36,9 @@ public class HttpHandler {
             InputStream in = new BufferedInputStream(connection.getInputStream());
             response = convertStreamToString(in);
 
-            Log.i(TAG, "server response: " + response);
+            Log.i(TAG, "server get JSON data: " + response);
+            Log.i(TAG, "server status: " + connection.getResponseCode());
+            Log.i(TAG, "server msg: " + connection.getResponseMessage());
 
         }catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
@@ -55,21 +58,21 @@ public class HttpHandler {
             URL url = new URL(reqUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("PUT");
+
             //set header info to inform server about the type of content
             connection.setRequestProperty("Content-type", "application/json;charset=UTF-8");
             connection.setRequestProperty("Accept", "application/json");
-            //connection.setDoOutput(true);
-            //connection.setDoInput(true);
+            connection.setDoOutput(true);
 
             //write request
-            Log.i(TAG, "put json data: " + jsonObject.toString());
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             out.writeBytes(jsonObject.toString());
             out.flush();
             out.close();
 
-            Log.i(TAG, "response status: " + connection.getResponseCode());
-            Log.i(TAG, "response msg: " + connection.getResponseMessage());
+            Log.i(TAG, "server put JSON data: " + jsonObject.toString());
+            Log.i(TAG, "server status: " + connection.getResponseCode());
+            Log.i(TAG, "server msg: " + connection.getResponseMessage());
 
         }catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
@@ -83,9 +86,12 @@ public class HttpHandler {
     }
 
     public boolean verifyEmail(String email, String password){
+        //@TODO verifyEmailRequest
         return true;
     }
 
+
+    @NonNull
     private String convertStreamToString(InputStream is){
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
@@ -97,13 +103,13 @@ public class HttpHandler {
             }
         }catch (IOException e){
             e.printStackTrace();
-            Log.e(TAG, "IOexception: " + e.getMessage());
+            Log.e(TAG, "IOException: " + e.getMessage());
         }finally {
             try {
                 is.close();
             }catch (IOException e){
                 e.printStackTrace();
-                Log.e(TAG, "IOexception: " + e.getMessage());
+                Log.e(TAG, "IOException: " + e.getMessage());
             }
         }
         return sb.toString();
