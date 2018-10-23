@@ -35,6 +35,8 @@ public class HttpHandler {
             InputStream in = new BufferedInputStream(connection.getInputStream());
             response = convertStreamToString(in);
 
+            Log.i(TAG, "server response: " + response);
+
         }catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
         } catch (ProtocolException e) {
