@@ -1,4 +1,4 @@
-package marbac.smarthome;
+package androidapp.smarthome;
 
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +9,6 @@ import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
-
 
 
 import org.json.JSONException;
@@ -87,13 +86,7 @@ public class HomeActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             //send request to api url and read response
             HttpHandler httpHandler = new HttpHandler();
-            String jsonString = httpHandler.reqGetJsonString(API_URL);
-
-                try {
-                    jsonObject = new JSONObject(jsonString);
-                } catch (JSONException e) {
-                    Log.e(TAG, "JSON parsing error: " + e.getMessage());
-                }
+            jsonObject = httpHandler.reqGetJsonObject(API_URL);
 
             return null;
         }
@@ -102,10 +95,12 @@ public class HomeActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             try {
                 //update gui
-                outdoorLightSwitch.setChecked(jsonObject.getBoolean("outdoorLights"));
-                indoorLightSwitch.setChecked(jsonObject.getBoolean("indoorLights"));
-                tempValueText.setText(jsonObject.get("temperature").toString());
-                progressBar.setVisibility(View.GONE);
+                if (jsonObject != null){
+                    outdoorLightSwitch.setChecked(jsonObject.getBoolean("outdoorLights"));
+                    indoorLightSwitch.setChecked(jsonObject.getBoolean("indoorLights"));
+                    tempValueText.setText(jsonObject.get("temperature").toString());
+                    progressBar.setVisibility(View.GONE);
+                }
             } catch (JSONException e) {
                 Log.e(TAG, "JSONException: + " + e.getMessage());
             }
@@ -125,7 +120,7 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             HttpHandler handler = new HttpHandler();
-            handler.reqPutState(API_URL, jsonObject);
+            handler.reqPutJsonObject(API_URL, jsonObject);
             return null;
         }
 

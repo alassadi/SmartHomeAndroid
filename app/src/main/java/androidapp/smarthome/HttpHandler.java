@@ -1,6 +1,5 @@
-package marbac.smarthome;
+package androidapp.smarthome;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -23,22 +22,25 @@ public class HttpHandler {
 
     }
 
-    public String reqGetJsonString(String reqUrl){
-        String response = null;
+    public JSONObject reqGetJsonObject(String reqUrl){
+        JSONObject jsonObject = null;
 
         try{
-            //send GET request
+            //HTTP GET request
             URL url = new URL(reqUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
             //read response
             InputStream in = new BufferedInputStream(connection.getInputStream());
-            response = convertStreamToString(in);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            jsonObject = new JSONObject(reader.readLine());
+            in.close();
 
-            Log.i(TAG, "server get JSON data: " + response);
+            Log.i(TAG, "server get JSON data: " + jsonObject.toString());
             Log.i(TAG, "server status: " + connection.getResponseCode());
             Log.i(TAG, "server msg: " + connection.getResponseMessage());
+
 
         }catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
@@ -49,10 +51,11 @@ public class HttpHandler {
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage());
         }
-        return response;
+
+        return jsonObject;
     }
 
-    public void reqPutState(String reqUrl, JSONObject jsonObject){
+    public void reqPutJsonObject(String reqUrl, JSONObject jsonObject){
         try {
             //send PUT request
             URL url = new URL(reqUrl);
@@ -90,28 +93,4 @@ public class HttpHandler {
         return true;
     }
 
-
-    @NonNull
-    private String convertStreamToString(InputStream is){
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line;
-        try{
-            while ((line = reader.readLine()) != null){
-                sb.append(line).append('\n');
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-            Log.e(TAG, "IOException: " + e.getMessage());
-        }finally {
-            try {
-                is.close();
-            }catch (IOException e){
-                e.printStackTrace();
-                Log.e(TAG, "IOException: " + e.getMessage());
-            }
-        }
-        return sb.toString();
-    }
 }
