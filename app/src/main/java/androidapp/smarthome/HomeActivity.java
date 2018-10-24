@@ -1,4 +1,4 @@
-package marbac.smarthome;
+package androidapp.smarthome;
 
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,22 +18,15 @@ import org.json.JSONObject;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
-    private static final String API_URL = "https://api.myjson.com/bins/9w1uk";
-
+    private static final String API_URL = "https://api.myjson.com/bins/175ch0";
 
     //UI
-     private Switch indoorLightSwitch, outdoorLightSwitch;
-     private TextView tempValueText;
-     private ProgressBar progressBar;
+    private Switch indoorLightSwitch, outdoorLightSwitch;
+    private TextView tempValueText;
+    private ProgressBar progressBar;
 
-     //states
-    private boolean indoorLights, outdoorLights;
-    private String temp;
-
-    //object for storing current JSONobject
+    //stores current JSONobject
     JSONObject jsonObject;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,21 +35,24 @@ public class HomeActivity extends AppCompatActivity {
 
         indoorLightSwitch = findViewById(R.id.switchIndoorLights);
         outdoorLightSwitch = findViewById(R.id.switchOutdoorLights);
+        //TODO add fire+burglar alarm
+
         tempValueText = findViewById(R.id.tempValueText);
         progressBar = findViewById(R.id.progressBar);
 
         progressBar.setVisibility(View.VISIBLE);
         new requestGetJSON().execute();
 
+
         indoorLightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                try{
+                try {
                     jsonObject.put("indoorLights", isChecked);
 
-                    new requestPostJSON().execute();
-                }catch (JSONException e){
-                    Log.e(TAG,  "error writing to JSONobject: + " + e.getMessage());
+                    new requestPutJSON().execute();
+                } catch (JSONException e) {
+                    Log.e(TAG, "error writing to JSONobject: + " + e.getMessage());
                 }
             }
         });
@@ -63,67 +60,67 @@ public class HomeActivity extends AppCompatActivity {
         outdoorLightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                try{
+                try {
                     jsonObject.put("outdoorLights", isChecked);
 
-                    new requestPostJSON().execute();
-                }catch (JSONException e){
-                    Log.e(TAG,  "error writing to JSONobject: + " + e.getMessage());
+                    new requestPutJSON().execute();
+                } catch (JSONException e) {
+                    Log.e(TAG, "error writing to JSONobject: + " + e.getMessage());
                 }
             }
         });
 
     }
 
-    //Background thread to handle http request to server
-    private class requestGetJSON extends AsyncTask<Void, Void, Void>{
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //@TODO refreshUi();
+    }
+
+    //Background thread to handle http GET request to server
+    private class requestGetJSON extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
             //send request to api url and read response
             HttpHandler httpHandler = new HttpHandler();
-            String jsonString = httpHandler.reqGetJsonString(API_URL);
+            jsonObject = httpHandler.reqGetJsonObject(API_URL);
 
-
-            Log.i(TAG, "api response: " + jsonString);
-            if (jsonString != null){
-                try{
-                    jsonObject = new JSONObject(jsonString);
-                    outdoorLights = jsonObject.getBoolean("outdoorLights");
-                    indoorLights = jsonObject.getBoolean("indoorLights");
-                    temp = jsonObject.getString("temperature");
-                }catch (JSONException e){
-                    Log.e(TAG, "JSON parsing error: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            }else{
-                Log.e(TAG, "Failed to read JSON from server");
-            }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            outdoorLightSwitch.setChecked(outdoorLights);
-            indoorLightSwitch.setChecked(indoorLights);
-            tempValueText.setText(temp);
-            progressBar.setVisibility(View.GONE);
+            try {
+                //update gui
+                if (jsonObject != null){
+                    outdoorLightSwitch.setChecked(jsonObject.getBoolean("outdoorLights"));
+                    indoorLightSwitch.setChecked(jsonObject.getBoolean("indoorLights"));
+                    tempValueText.setText(jsonObject.get("temperature").toString());
+                    progressBar.setVisibility(View.GONE);
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException: + " + e.getMessage());
+            }
+
         }
 
         @Override
         protected void onCancelled() {
-            Log.e(TAG , "Cancelled jsonRequest");
+            Log.e(TAG, "get request cancelled");
         }
-
     }
 
-    private class requestPostJSON extends AsyncTask<Void, Void, Void>{
+    //Background thread to handle http PUT request to server
+    private class requestPutJSON extends AsyncTask<Void, Void, Void> {
 
 
         @Override
         protected Void doInBackground(Void... voids) {
             HttpHandler handler = new HttpHandler();
-            handler.reqPutState(API_URL, jsonObject);
+            handler.reqPutJsonObject(API_URL, jsonObject);
             return null;
         }
 
@@ -134,7 +131,9 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         protected void onCancelled() {
-            super.onCancelled();
+            Log.e(TAG, "put request cancelled");
         }
     }
+
+
 }

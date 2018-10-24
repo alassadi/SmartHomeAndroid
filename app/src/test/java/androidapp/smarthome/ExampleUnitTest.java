@@ -1,4 +1,4 @@
-package marbac.smarthome;
+package androidapp.smarthome;
 
 import org.junit.Test;
 

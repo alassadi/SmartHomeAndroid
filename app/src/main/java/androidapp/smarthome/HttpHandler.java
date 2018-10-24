@@ -1,4 +1,4 @@
-package marbac.smarthome;
+package androidapp.smarthome;
 
 import android.util.Log;
 
@@ -22,18 +22,25 @@ public class HttpHandler {
 
     }
 
-    public String reqGetJsonString(String reqUrl){
-        String response = null;
+    public JSONObject reqGetJsonObject(String reqUrl){
+        JSONObject jsonObject = null;
 
         try{
-            //send GET request
+            //HTTP GET request
             URL url = new URL(reqUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
             //read response
             InputStream in = new BufferedInputStream(connection.getInputStream());
-            response = convertStreamToString(in);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            jsonObject = new JSONObject(reader.readLine());
+            in.close();
+
+            Log.i(TAG, "server get JSON data: " + jsonObject.toString());
+            Log.i(TAG, "server status: " + connection.getResponseCode());
+            Log.i(TAG, "server msg: " + connection.getResponseMessage());
+
 
         }catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
@@ -44,30 +51,31 @@ public class HttpHandler {
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage());
         }
-        return response;
+
+        return jsonObject;
     }
 
-    public void reqPutState(String reqUrl, JSONObject jsonObject){
+    public void reqPutJsonObject(String reqUrl, JSONObject jsonObject){
         try {
             //send PUT request
             URL url = new URL(reqUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("PUT");
+
             //set header info to inform server about the type of content
             connection.setRequestProperty("Content-type", "application/json;charset=UTF-8");
             connection.setRequestProperty("Accept", "application/json");
-            //connection.setDoOutput(true);
-            //connection.setDoInput(true);
+            connection.setDoOutput(true);
 
             //write request
-            Log.i(TAG, "put json data: " + jsonObject.toString());
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             out.writeBytes(jsonObject.toString());
             out.flush();
             out.close();
 
-            Log.i(TAG, "response status: " + connection.getResponseCode());
-            Log.i(TAG, "response msg: " + connection.getResponseMessage());
+            Log.i(TAG, "server put JSON data: " + jsonObject.toString());
+            Log.i(TAG, "server status: " + connection.getResponseCode());
+            Log.i(TAG, "server msg: " + connection.getResponseMessage());
 
         }catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
@@ -81,29 +89,8 @@ public class HttpHandler {
     }
 
     public boolean verifyEmail(String email, String password){
+        //@TODO verifyEmailRequest
         return true;
     }
 
-    private String convertStreamToString(InputStream is){
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line;
-        try{
-            while ((line = reader.readLine()) != null){
-                sb.append(line).append('\n');
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-            Log.e(TAG, "IOexception: " + e.getMessage());
-        }finally {
-            try {
-                is.close();
-            }catch (IOException e){
-                e.printStackTrace();
-                Log.e(TAG, "IOexception: " + e.getMessage());
-            }
-        }
-        return sb.toString();
-    }
 }

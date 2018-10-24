@@ -7,4 +7,7 @@
     <string name="outdoor_lights">Outdoor lights</string>
     <string name="temp_text">Temperature: </string>
     <string name="temp_value"></string>
+    <string name="fire_alarm">Fire Alarm</string>
+    <string name="burglar_alarm">Burglar Alarm</string>
+
 </resources>

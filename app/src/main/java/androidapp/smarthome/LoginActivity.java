@@ -1,4 +1,4 @@
-package marbac.smarthome;
+package androidapp.smarthome;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -19,7 +19,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private ProgressBar progressBar;
     private EditText emailEditText, passwordEditText;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
+            Log.i(TAG, "requestVerifyEmailAndPassword: " + email);
             /*
             send login request with HttpHandler
             return true if login was verified
@@ -108,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
             try{
                 //simulate login verification
                 Thread.sleep(2000);
-                Log.i(TAG, "verified email : " + email);
             }catch (InterruptedException e){
                 Log.e(TAG, "InterruptedException: " + e.getMessage());
             }
@@ -119,16 +118,19 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(final Boolean verified) {
 
             if (verified){
+                Log.i(TAG, "email verified: " + email);
                 //start new activity
                 progressBar.setVisibility(View.GONE);
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 /*
-                intent.putExtra("email", email);
+                intent.putExtra("user", email);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 */
                 startActivity(intent);
-                finish();
+                //finish() removes activity from activityStack
+                //finish();
             }else {
+                Log.i(TAG, "email unverified: " + email);
                 passwordEditText.setError("Password is incorrect, try again");
                 passwordEditText.requestFocus();
 
@@ -137,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onCancelled() {
-            Toast.makeText(getApplicationContext(), "Login cancelled", Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(), "login cancelled", Toast.LENGTH_SHORT);
         }
     }
 
