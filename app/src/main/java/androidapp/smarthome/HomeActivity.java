@@ -18,10 +18,10 @@ import org.json.JSONObject;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
-    private static final String API_URL = "https://api.myjson.com/bins/175ch0";
+    private static final String API_URL = "https://api.myjson.com/bins/zybmk";
 
     //UI
-    private Switch indoorLightSwitch, outdoorLightSwitch;
+    private Switch indoorLightSwitch, outdoorLightSwitch, fireAlarmSwitch;
     private TextView tempValueText;
     private ProgressBar progressBar;
 
@@ -35,6 +35,7 @@ public class HomeActivity extends AppCompatActivity {
 
         indoorLightSwitch = findViewById(R.id.switchIndoorLights);
         outdoorLightSwitch = findViewById(R.id.switchOutdoorLights);
+        fireAlarmSwitch = findViewById(R.id.switchFireAlarm);
         //TODO add fire+burglar alarm
 
         tempValueText = findViewById(R.id.tempValueText);
@@ -70,6 +71,17 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        fireAlarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                try {
+                    jsonObject.put("fireAlarm", isChecked);
+                    new requestPutJSON().execute();
+                } catch (JSONException e){
+                    Log.e(TAG, "error writing to JSONObject: + " + e.getMessage());
+                }
+            }
+        });
     }
 
 
@@ -98,6 +110,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (jsonObject != null){
                     outdoorLightSwitch.setChecked(jsonObject.getBoolean("outdoorLights"));
                     indoorLightSwitch.setChecked(jsonObject.getBoolean("indoorLights"));
+                    fireAlarmSwitch.setChecked(jsonObject.getBoolean("fireAlarm"));
                     tempValueText.setText(jsonObject.get("temperature").toString());
                     progressBar.setVisibility(View.GONE);
                 }
