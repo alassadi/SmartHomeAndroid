@@ -17,6 +17,8 @@ import org.json.JSONObject;
 
 public class HomeActivity extends AppCompatActivity {
 
+    // JUST FOR TEST, remove later
+
     private static final String TAG = HomeActivity.class.getSimpleName();
     private static final String API_URL = "https://api.myjson.com/bins/zybmk";
 
