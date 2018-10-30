@@ -16,14 +16,12 @@ import org.json.JSONObject;
 
 
 public class HomeActivity extends AppCompatActivity {
-
-    // JUST FOR TEST, remove later
-
+    
     private static final String TAG = HomeActivity.class.getSimpleName();
-    private static final String API_URL = "https://api.myjson.com/bins/zybmk";
+    private static final String API_URL = "https://api.myjson.com/bins/179fxm";
 
     //UI
-    private Switch indoorLightSwitch, outdoorLightSwitch, fireAlarmSwitch;
+    private Switch indoorLightSwitch, outdoorLightSwitch, fireAlarmSwitch, burglarAlarmSwitch;
     private TextView tempValueText;
     private ProgressBar progressBar;
 
@@ -38,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
         indoorLightSwitch = findViewById(R.id.switchIndoorLights);
         outdoorLightSwitch = findViewById(R.id.switchOutdoorLights);
         fireAlarmSwitch = findViewById(R.id.switchFireAlarm);
-        //TODO add fire+burglar alarm
+        burglarAlarmSwitch = findViewById(R.id.switchBurglarAlarm);
 
         tempValueText = findViewById(R.id.tempValueText);
         progressBar = findViewById(R.id.progressBar);
@@ -84,6 +82,19 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        burglarAlarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                try {
+                    jsonObject.put("burglarAlarm", isChecked);
+                    new requestPutJSON().execute();
+                } catch (JSONException e){
+                    Log.e(TAG, "error writing to JSONObject: + " + e.getMessage());
+                }
+
+            }
+        });
     }
 
 
@@ -114,6 +125,7 @@ public class HomeActivity extends AppCompatActivity {
                     indoorLightSwitch.setChecked(jsonObject.getBoolean("indoorLights"));
                     fireAlarmSwitch.setChecked(jsonObject.getBoolean("fireAlarm"));
                     tempValueText.setText(jsonObject.get("temperature").toString());
+                    burglarAlarmSwitch.setChecked(jsonObject.getBoolean("burglarAlarm"));
                     progressBar.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
