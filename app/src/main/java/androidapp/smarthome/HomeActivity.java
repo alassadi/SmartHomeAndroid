@@ -16,15 +16,7 @@ import org.json.JSONObject;
 
 
 public class HomeActivity extends AppCompatActivity {
-<<<<<<< HEAD
-    
-=======
 
-    // JUST FOR TEST, remove later
-
-    //feature test
-
->>>>>>> 0373da7ea0bd5107aa6875a598fe97cf3717583a
     private static final String TAG = HomeActivity.class.getSimpleName();
     private static final String API_URL = "https://api.myjson.com/bins/179fxm";
 

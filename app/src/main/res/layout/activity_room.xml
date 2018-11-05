@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/black">
+
+    <ImageButton
+        android:id="@+id/indoorButton"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="42dp"
+        android:layout_marginLeft="42dp"
+        android:layout_marginTop="226dp"
+        android:layout_marginEnd="276dp"
+        android:layout_marginRight="276dp"
+        android:layout_marginBottom="217dp"
+        android:contentDescription="@string/indoorBtn"
+        android:onClick="indoorPressed"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/indoor" />
+
+    <ImageButton
+        android:id="@+id/outdoorBtn"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="157dp"
+        android:layout_marginLeft="157dp"
+        android:layout_marginTop="226dp"
+        android:layout_marginEnd="166dp"
+        android:layout_marginRight="166dp"
+        android:layout_marginBottom="218dp"
+        android:contentDescription="@string/outdoorBtn"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/outdoor" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="274dp"
+        android:layout_marginLeft="274dp"
+        android:layout_marginTop="224dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginRight="46dp"
+        android:layout_marginBottom="217dp"
+        android:contentDescription="@string/atticBtn"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/attic" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="142dp"
+        android:layout_marginLeft="142dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="142dp"
+        android:layout_marginRight="142dp"
+        android:layout_marginBottom="381dp"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/smarthome_hp" />
+
+    <TextView
+        android:id="@+id/indoorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/indoorButton"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="282dp"
+        android:layout_marginRight="282dp"
+        android:layout_marginBottom="196dp"
+        android:contentDescription="@string/indoorTextView"
+        android:text="@string/indoorTextView"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/outdoorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/indoorButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-217dp"
+        android:contentDescription="@string/outdoorTextView"
+        android:text="@string/outdoorTextView"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/atticTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/outdoorTextView"
+        android:layout_alignEnd="@+id/imageButton"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="28dp"
+        android:contentDescription="@string/atticTextView"
+        android:text="@string/atticTextView"
+        android:textColor="@color/white" />
+</RelativeLayout>

@@ -121,7 +121,8 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i(TAG, "email verified: " + email);
                 //start new activity
                 progressBar.setVisibility(View.GONE);
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                // FOR TRY: CHANGE BACK TO HomeActivity.class
+                Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
                 /*
                 intent.putExtra("user", email);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

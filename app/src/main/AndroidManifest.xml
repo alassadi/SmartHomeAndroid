@@ -20,6 +20,9 @@
         <activity android:name="androidapp.smarthome.HomeActivity">
 
         </activity>
+        <activity android:name="androidapp.smarthome.RoomActivity">
+
+        </activity>
     </application>
 
 
