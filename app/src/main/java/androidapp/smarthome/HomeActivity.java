@@ -1,5 +1,9 @@
 package androidapp.smarthome;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import org.json.JSONException;
@@ -19,6 +24,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private static final String API_URL = "https://api.myjson.com/bins/179fxm";
+
+
 
     //UI
     private Switch indoorLightSwitch, outdoorLightSwitch, fireAlarmSwitch, burglarAlarmSwitch;
@@ -98,11 +105,36 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
         //@TODO refreshUi();
+
+
+        //register broadcast receiver
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("androidapp.smarthome.FcmService.onMessageReceived");
+        BroadcastReceiver receiver = new mBroadcastReceiver();
+        registerReceiver(receiver, intentFilter);
     }
+
+
+    //Receives notification FcmService
+    private class mBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //update ui
+            String data = intent.getStringExtra("data");
+            String notification = intent.getStringExtra("notification");
+
+            Toast.makeText(getApplicationContext(), "notification: " + data + " + " + notification, Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+
 
     //Background thread to handle http GET request to server
     private class requestGetJSON extends AsyncTask<Void, Void, Void> {

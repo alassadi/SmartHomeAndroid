@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "227730898463",
+    "firebase_url": "https://smarthome-3c6b9.firebaseio.com",
+    "project_id": "smarthome-3c6b9",
+    "storage_bucket": "smarthome-3c6b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227730898463:android:aa969e986c780b5b",
+        "android_client_info": {
+          "package_name": "androidapp.smarthome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227730898463-jcr7lgog6g3tf01klitsfrkbciq2nicq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "androidapp.smarthome",
+            "certificate_hash": "d2c36af5c239a3cae48e5badd5248eb736fdf340"
+          }
+        },
+        {
+          "client_id": "227730898463-ufv0bb09ssrl4340rg10gdt6med198cs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8bJGMYXJLaCnIJtDdFOe3BsHm_h2k1WI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227730898463-ufv0bb09ssrl4340rg10gdt6med198cs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "227730898463-12jhn6fbml6pq1vailvrhk0u2c5d9nop.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.charlie.SmartHome-ios-test"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
