@@ -20,14 +20,14 @@ import java.net.URL;
 public class HttpHandler {
     private static final String TAG = HttpHandler.class.getSimpleName();
 
-    public HttpHandler(){
+    public HttpHandler() {
 
     }
 
 
     //getDeviceStatus endpoint not working yet
-    public JSONObject requestGetDeviceStatus(JSONObject jsonObject){
-        try{
+    public JSONObject requestGetDeviceStatus(JSONObject jsonObject) {
+        try {
             //send GET request
             URL url = new URL("https://us-central1-smarthome-3c6b9.cloudfunctions.net/getDeviceStatus");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -48,7 +48,7 @@ public class HttpHandler {
             Log.i(TAG, "server status: " + connection.getResponseCode());
             Log.i(TAG, "server msg: " + connection.getResponseMessage());
 
-        }catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
         } catch (ProtocolException e) {
             Log.e(TAG, "ProtocolException: " + e.getMessage());
@@ -63,21 +63,21 @@ public class HttpHandler {
     }
 
 
-    public void requestUpdateToken(JSONObject jsonToken){
+    public void requestUpdateToken(JSONObject jsonToken) {
         new taskUpdateToken().execute(jsonToken);
     }
 
-    public void requestUpdateDeviceStatus(JSONObject jsonObject){
+    public void requestUpdateDeviceStatus(JSONObject jsonObject) {
         new taskUpdateDeviceStatus().execute(jsonObject);
     }
 
 
-    private static class taskUpdateToken extends AsyncTask<JSONObject, Void, Void>{
+    private static class taskUpdateToken extends AsyncTask<JSONObject, Void, Void> {
 
         @Override
         protected Void doInBackground(JSONObject... jsonObjects) {
 
-            try{
+            try {
                 //send POST request
                 URL url = new URL("https://us-central1-smarthome-3c6b9.cloudfunctions.net/updateFcmToken");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -92,11 +92,11 @@ public class HttpHandler {
                 out.flush();
                 out.close();
 
-                Log.i(TAG, "post update device status " + jsonObjects[0]);
+                Log.i(TAG, "post updateToken " + jsonObjects[0]);
                 Log.i(TAG, "server status: " + connection.getResponseCode());
                 Log.i(TAG, "server msg: " + connection.getResponseMessage());
 
-            }catch (MalformedURLException e) {
+            } catch (MalformedURLException e) {
                 Log.e(TAG, "MalformedURLException: " + e.getMessage());
             } catch (ProtocolException e) {
                 Log.e(TAG, "ProtocolException: " + e.getMessage());
@@ -111,12 +111,12 @@ public class HttpHandler {
         }
     }
 
-    private static class taskUpdateDeviceStatus extends AsyncTask<JSONObject, Void, Void>{
+    private static class taskUpdateDeviceStatus extends AsyncTask<JSONObject, Void, Void> {
 
         @Override
         protected Void doInBackground(JSONObject... jsonObjects) {
 
-            try{
+            try {
                 //send POST request
                 URL url = new URL("https://us-central1-smarthome-3c6b9.cloudfunctions.net/updateDeviceThroughJson");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -131,11 +131,11 @@ public class HttpHandler {
                 out.flush();
                 out.close();
 
-                Log.i(TAG, "post updateToken: " + jsonObjects[0]);
+                Log.i(TAG, "post updateDeviceStatus: " + jsonObjects[0]);
                 Log.i(TAG, "server status: " + connection.getResponseCode());
                 Log.i(TAG, "server msg: " + connection.getResponseMessage());
 
-            }catch (MalformedURLException e) {
+            } catch (MalformedURLException e) {
                 Log.e(TAG, "MalformedURLException: " + e.getMessage());
             } catch (ProtocolException e) {
                 Log.e(TAG, "ProtocolException: " + e.getMessage());
@@ -144,15 +144,12 @@ public class HttpHandler {
             } catch (Exception e) {
                 Log.e(TAG, "Exception: " + e.getMessage());
             }
-
-
             return null;
         }
     }
 
 
-
-    public boolean verifyEmail(String email, String password){
+    public boolean verifyEmail(String email, String password) {
         //@TODO verifyEmailRequest
         return true;
     }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,23 +38,65 @@ public class HomeActivity extends AppCompatActivity {
     private TextView tempValueText;
     private ProgressBar progressBar;
 
+    //firebase database
+    FirebaseDatabase mDatabase;
+    DatabaseReference mDatabaseReference;
+
     //stores current JSONobject
     JSONObject jsonObject;
+    //broadcast receiver
+    BroadcastReceiver mBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        //init ui
         indoorLightSwitch = findViewById(R.id.switchIndoorLights);
         outdoorLightSwitch = findViewById(R.id.switchOutdoorLights);
         fireAlarmSwitch = findViewById(R.id.switchFireAlarm);
         burglarAlarmSwitch = findViewById(R.id.switchBurglarAlarm);
-
         tempValueText = findViewById(R.id.tempValueText);
         progressBar = findViewById(R.id.progressBar);
-
         progressBar.setVisibility(View.GONE);
+
+        //init broadcast receiver
+        mBroadcastReceiver = new mBroadcastReceiver();
+
+        //init firebase database
+        mDatabase = FirebaseDatabase.getInstance();
+        mDatabaseReference = mDatabase.getReference("Devices/my9iXu6WvEgx5oNLLegs");
+
+        //temporary solution used instead of cloud messaging
+        mDatabaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //updateUi();
+                System.out.println("snapshot :" + dataSnapshot.getValue());
+                indoorLightSwitch.setChecked((boolean)dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         //updateUi();
 
@@ -114,10 +165,15 @@ public class HomeActivity extends AppCompatActivity {
         //register broadcast receiver for firebase cloud notifications
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("androidapp.smarthome.FcmService.onMessageReceived");
-        BroadcastReceiver receiver = new mBroadcastReceiver();
-        registerReceiver(receiver, intentFilter);
+        registerReceiver(mBroadcastReceiver, intentFilter);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //unregister broadcast when activity is paused
+        unregisterReceiver(mBroadcastReceiver);
+    }
 
     //Receives firebase cloud notification
     private class mBroadcastReceiver extends BroadcastReceiver {
@@ -151,6 +207,7 @@ public class HomeActivity extends AppCompatActivity {
                 //update ui
                     indoorLightSwitch.setChecked(jsonObject.getBoolean("enabled"));
 
+//not required for first presentation
 //                if (jsonObject != null) {
 //                    outdoorLightSwitch.setChecked(jsonObject.getBoolean("outdoorLights"));
 //                    fireAlarmSwitch.setChecked(jsonObject.getBoolean("fireAlarm"));

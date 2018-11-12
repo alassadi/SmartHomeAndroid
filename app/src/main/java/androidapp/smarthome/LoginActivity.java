@@ -72,24 +72,24 @@ public class LoginActivity extends AppCompatActivity {
 
         }else {
             progressBar.setVisibility(View.VISIBLE);
-            UserLoginTask userLoginTask = new UserLoginTask(email, password);
-            userLoginTask.execute((Void) null);
+            TaskUserLogin taskUserLogin = new TaskUserLogin(email, password);
+            taskUserLogin.execute((Void) null);
         }
         */
 
         progressBar.setVisibility(View.VISIBLE);
-        UserLoginTask userLoginTask = new UserLoginTask(email, password);
-        userLoginTask.execute((Void) null);
+        TaskUserLogin taskUserLogin = new TaskUserLogin(email, password);
+        taskUserLogin.execute((Void) null);
 
     }
 
 
 
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean>{
+    public class TaskUserLogin extends AsyncTask<Void, Void, Boolean>{
         private final String email;
         private final String password;
 
-        public UserLoginTask(String email, String password){
+        public TaskUserLogin(String email, String password){
             this.email = email;
             this.password = password;
         }
