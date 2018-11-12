@@ -17,8 +17,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -66,40 +64,22 @@ public class HomeActivity extends AppCompatActivity {
 
         //init firebase database
         mDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mDatabase.getReference("Devices/my9iXu6WvEgx5oNLLegs");
+        mDatabaseReference = mDatabase.getReference("Devices/my9iXu6WvEgx5oNLLegs/enabled");
 
         //temporary solution used instead of cloud messaging
-        mDatabaseReference.addChildEventListener(new ChildEventListener() {
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                //updateUi();
-                System.out.println("snapshot :" + dataSnapshot.getValue());
-                indoorLightSwitch.setChecked((boolean)dataSnapshot.getValue());
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                indoorLightSwitch.setChecked((boolean) dataSnapshot.getValue());
+                Log.i(TAG, "onDataChange: " + dataSnapshot.getValue());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
 
         //updateUi();
-
 
         indoorLightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -136,7 +116,7 @@ public class HomeActivity extends AppCompatActivity {
                 try {
                     jsonObject.put("fireAlarm", isChecked);
                     //new request
-                } catch (JSONException e){
+                } catch (JSONException e) {
                     Log.e(TAG, "error writing to JSONObject: + " + e.getMessage());
                 }
             }
@@ -149,7 +129,7 @@ public class HomeActivity extends AppCompatActivity {
                     jsonObject.put("burglarAlarm", isChecked);
                     //new request
 
-                } catch (JSONException e){
+                } catch (JSONException e) {
                     Log.e(TAG, "error writing to JSONObject: + " + e.getMessage());
                 }
 
