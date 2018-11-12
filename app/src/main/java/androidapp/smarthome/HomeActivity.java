@@ -23,9 +23,6 @@ import org.json.JSONObject;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
-    private static final String API_URL = "https://api.myjson.com/bins/179fxm";
-
-
 
     //UI
     private Switch indoorLightSwitch, outdoorLightSwitch, fireAlarmSwitch, burglarAlarmSwitch;
@@ -48,17 +45,22 @@ public class HomeActivity extends AppCompatActivity {
         tempValueText = findViewById(R.id.tempValueText);
         progressBar = findViewById(R.id.progressBar);
 
-        progressBar.setVisibility(View.VISIBLE);
-        new requestGetJSON().execute();
+        progressBar.setVisibility(View.GONE);
+
+        //updateUi();
 
 
         indoorLightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    jsonObject.put("indoorLights", isChecked);
+                    //@TODO get user id from firebase authentication when logged in.
+                    jsonObject = new JSONObject();
+                    jsonObject.put("id", "my9iXu6WvEgx5oNLLegs");
+                    jsonObject.put("enabled", isChecked);
 
-                    new requestPutJSON().execute();
+                    new HttpHandler().requestUpdateDeviceStatus(jsonObject);
+
                 } catch (JSONException e) {
                     Log.e(TAG, "error writing to JSONobject: + " + e.getMessage());
                 }
@@ -70,8 +72,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
                     jsonObject.put("outdoorLights", isChecked);
-
-                    new requestPutJSON().execute();
+                    //new request
                 } catch (JSONException e) {
                     Log.e(TAG, "error writing to JSONobject: + " + e.getMessage());
                 }
@@ -83,7 +84,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
                     jsonObject.put("fireAlarm", isChecked);
-                    new requestPutJSON().execute();
+                    //new request
                 } catch (JSONException e){
                     Log.e(TAG, "error writing to JSONObject: + " + e.getMessage());
                 }
@@ -95,7 +96,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
                     jsonObject.put("burglarAlarm", isChecked);
-                    new requestPutJSON().execute();
+                    //new request
+
                 } catch (JSONException e){
                     Log.e(TAG, "error writing to JSONObject: + " + e.getMessage());
                 }
@@ -104,16 +106,12 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
-        //@TODO refreshUi();
+        //@TODO updateUi();
 
-
-        //register broadcast receiver
+        //register broadcast receiver for firebase cloud notifications
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("androidapp.smarthome.FcmService.onMessageReceived");
         BroadcastReceiver receiver = new mBroadcastReceiver();
@@ -121,78 +119,50 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    //Receives notification FcmService
+    //Receives firebase cloud notification
     private class mBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            //update ui
+            //@TODO updateUi();
             String data = intent.getStringExtra("data");
             String notification = intent.getStringExtra("notification");
-
             Toast.makeText(getApplicationContext(), "notification: " + data + " + " + notification, Toast.LENGTH_LONG).show();
         }
     }
 
 
 
-
-    //Background thread to handle http GET request to server
-    private class requestGetJSON extends AsyncTask<Void, Void, Void> {
+    /*
+    //requires getDeviceStatus endpoint before implementation can be done
+    private class updateUi extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            //send request to api url and read response
-            HttpHandler httpHandler = new HttpHandler();
-            jsonObject = httpHandler.reqGetJsonObject(API_URL);
-
+            //getDeviceStatus
+            //JSONObject jsonObject = new JSONObject();
+            //HttpHandler httpHandler = new HttpHandler();
+            //jsonObject = httpHandler.requestGetDeviceStatus();
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             try {
-                //update gui
-                if (jsonObject != null){
-                    outdoorLightSwitch.setChecked(jsonObject.getBoolean("outdoorLights"));
-                    indoorLightSwitch.setChecked(jsonObject.getBoolean("indoorLights"));
-                    fireAlarmSwitch.setChecked(jsonObject.getBoolean("fireAlarm"));
-                    tempValueText.setText(jsonObject.get("temperature").toString());
-                    burglarAlarmSwitch.setChecked(jsonObject.getBoolean("burglarAlarm"));
-                    progressBar.setVisibility(View.GONE);
-                }
+                //update ui
+                    indoorLightSwitch.setChecked(jsonObject.getBoolean("enabled"));
+
+//                if (jsonObject != null) {
+//                    outdoorLightSwitch.setChecked(jsonObject.getBoolean("outdoorLights"));
+//                    fireAlarmSwitch.setChecked(jsonObject.getBoolean("fireAlarm"));
+//                    tempValueText.setText(jsonObject.get("temperature").toString());
+//                    burglarAlarmSwitch.setChecked(jsonObject.getBoolean("burglarAlarm"));
+//                    progressBar.setVisibility(View.GONE);
+//                }
             } catch (JSONException e) {
                 Log.e(TAG, "JSONException: + " + e.getMessage());
             }
-
-        }
-
-        @Override
-        protected void onCancelled() {
-            Log.e(TAG, "get request cancelled");
         }
     }
-
-    //Background thread to handle http PUT request to server
-    private class requestPutJSON extends AsyncTask<Void, Void, Void> {
-
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            HttpHandler handler = new HttpHandler();
-            handler.reqPutJsonObject(API_URL, jsonObject);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-
-        @Override
-        protected void onCancelled() {
-            Log.e(TAG, "put request cancelled");
-        }
-    }
-
+    */
 
 }

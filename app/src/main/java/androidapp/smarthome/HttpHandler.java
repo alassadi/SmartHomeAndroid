@@ -1,7 +1,9 @@
 package androidapp.smarthome;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -22,25 +24,29 @@ public class HttpHandler {
 
     }
 
-    public JSONObject reqGetJsonObject(String reqUrl){
-        JSONObject jsonObject = null;
 
+    //getDeviceStatus endpoint not working yet
+    public JSONObject requestGetDeviceStatus(JSONObject jsonObject){
         try{
-            //HTTP GET request
-            URL url = new URL(reqUrl);
+            //send GET request
+            URL url = new URL("https://us-central1-smarthome-3c6b9.cloudfunctions.net/getDeviceStatus");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
-            //read response
-            InputStream in = new BufferedInputStream(connection.getInputStream());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            jsonObject = new JSONObject(reader.readLine());
-            in.close();
+            connection.setRequestProperty("Content-type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setDoOutput(true);
 
-            Log.i(TAG, "server get JSON data: " + jsonObject.toString());
+            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+            out.writeBytes(jsonObject.toString());
+            out.flush();
+            out.close();
+
+            jsonObject = new JSONObject(connection.getResponseMessage());
+
+            Log.i(TAG, "GET device status " + jsonObject.toString());
             Log.i(TAG, "server status: " + connection.getResponseCode());
             Log.i(TAG, "server msg: " + connection.getResponseMessage());
-
 
         }catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
@@ -53,40 +59,98 @@ public class HttpHandler {
         }
 
         return jsonObject;
+
     }
 
-    public void reqPutJsonObject(String reqUrl, JSONObject jsonObject){
-        try {
-            //send PUT request
-            URL url = new URL(reqUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("PUT");
 
-            //set header info to inform server about the type of content
-            connection.setRequestProperty("Content-type", "application/json;charset=UTF-8");
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setDoOutput(true);
+    public void requestUpdateToken(JSONObject jsonToken){
+        new taskUpdateToken().execute(jsonToken);
+    }
 
-            //write request
-            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            out.writeBytes(jsonObject.toString());
-            out.flush();
-            out.close();
+    public void requestUpdateDeviceStatus(JSONObject jsonObject){
+        new taskUpdateDeviceStatus().execute(jsonObject);
+    }
 
-            Log.i(TAG, "server put JSON data: " + jsonObject.toString());
-            Log.i(TAG, "server status: " + connection.getResponseCode());
-            Log.i(TAG, "server msg: " + connection.getResponseMessage());
 
-        }catch (MalformedURLException e) {
-            Log.e(TAG, "MalformedURLException: " + e.getMessage());
-        } catch (ProtocolException e) {
-            Log.e(TAG, "ProtocolException: " + e.getMessage());
-        } catch (IOException e) {
-            Log.e(TAG, "IOException: " + e.getMessage());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage());
+    private static class taskUpdateToken extends AsyncTask<JSONObject, Void, Void>{
+
+        @Override
+        protected Void doInBackground(JSONObject... jsonObjects) {
+
+            try{
+                //send POST request
+                URL url = new URL("https://us-central1-smarthome-3c6b9.cloudfunctions.net/updateFcmToken");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+
+                connection.setRequestProperty("Content-type", "application/json");
+                connection.setRequestProperty("Accept", "application/json");
+                connection.setDoOutput(true);
+
+                DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+                out.writeBytes(jsonObjects[0].toString());
+                out.flush();
+                out.close();
+
+                Log.i(TAG, "post update device status " + jsonObjects[0]);
+                Log.i(TAG, "server status: " + connection.getResponseCode());
+                Log.i(TAG, "server msg: " + connection.getResponseMessage());
+
+            }catch (MalformedURLException e) {
+                Log.e(TAG, "MalformedURLException: " + e.getMessage());
+            } catch (ProtocolException e) {
+                Log.e(TAG, "ProtocolException: " + e.getMessage());
+            } catch (IOException e) {
+                Log.e(TAG, "IOException: " + e.getMessage());
+            } catch (Exception e) {
+                Log.e(TAG, "Exception: " + e.getMessage());
+            }
+
+
+            return null;
         }
     }
+
+    private static class taskUpdateDeviceStatus extends AsyncTask<JSONObject, Void, Void>{
+
+        @Override
+        protected Void doInBackground(JSONObject... jsonObjects) {
+
+            try{
+                //send POST request
+                URL url = new URL("https://us-central1-smarthome-3c6b9.cloudfunctions.net/updateDeviceThroughJson");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+
+                connection.setRequestProperty("Content-type", "application/json");
+                connection.setRequestProperty("Accept", "application/json");
+                connection.setDoOutput(true);
+
+                DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+                out.writeBytes(jsonObjects[0].toString());
+                out.flush();
+                out.close();
+
+                Log.i(TAG, "post updateToken: " + jsonObjects[0]);
+                Log.i(TAG, "server status: " + connection.getResponseCode());
+                Log.i(TAG, "server msg: " + connection.getResponseMessage());
+
+            }catch (MalformedURLException e) {
+                Log.e(TAG, "MalformedURLException: " + e.getMessage());
+            } catch (ProtocolException e) {
+                Log.e(TAG, "ProtocolException: " + e.getMessage());
+            } catch (IOException e) {
+                Log.e(TAG, "IOException: " + e.getMessage());
+            } catch (Exception e) {
+                Log.e(TAG, "Exception: " + e.getMessage());
+            }
+
+
+            return null;
+        }
+    }
+
+
 
     public boolean verifyEmail(String email, String password){
         //@TODO verifyEmailRequest

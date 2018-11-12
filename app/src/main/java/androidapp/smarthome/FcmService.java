@@ -20,23 +20,12 @@ public class FcmService extends FirebaseMessagingService {
         String data = null;
         String notification = null;
 
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Log.d(TAG, "FCM From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             data = remoteMessage.getData().toString();
-
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-                //scheduleJob();
-            } else {
-                // Handle message within 10 seconds
-                //handleNow();
-            }
-
         }
 
         // Check if message contains a notification payload.
@@ -45,7 +34,7 @@ public class FcmService extends FirebaseMessagingService {
             notification = remoteMessage.getNotification().getBody();
         }
 
-        //broadcasts notification to HomeActivity
+        //broadcasts notification to activities
         Intent intent = new Intent();
         intent.putExtra("data", data);
         intent.putExtra("notification", notification);
