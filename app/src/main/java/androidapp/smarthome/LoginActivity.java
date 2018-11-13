@@ -72,24 +72,24 @@ public class LoginActivity extends AppCompatActivity {
 
         }else {
             progressBar.setVisibility(View.VISIBLE);
-            UserLoginTask userLoginTask = new UserLoginTask(email, password);
-            userLoginTask.execute((Void) null);
+            TaskUserLogin taskUserLogin = new TaskUserLogin(email, password);
+            taskUserLogin.execute((Void) null);
         }
         */
 
         progressBar.setVisibility(View.VISIBLE);
-        UserLoginTask userLoginTask = new UserLoginTask(email, password);
-        userLoginTask.execute((Void) null);
+        TaskUserLogin taskUserLogin = new TaskUserLogin(email, password);
+        taskUserLogin.execute((Void) null);
 
     }
 
 
 
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean>{
+    public class TaskUserLogin extends AsyncTask<Void, Void, Boolean>{
         private final String email;
         private final String password;
 
-        public UserLoginTask(String email, String password){
+        public TaskUserLogin(String email, String password){
             this.email = email;
             this.password = password;
         }
@@ -121,7 +121,8 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i(TAG, "email verified: " + email);
                 //start new activity
                 progressBar.setVisibility(View.GONE);
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                // FOR TRY: CHANGE BACK TO HomeActivity.class
+                Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
                 /*
                 intent.putExtra("user", email);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
