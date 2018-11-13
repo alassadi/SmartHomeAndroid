@@ -52,10 +52,10 @@ public class HomeActivity extends AppCompatActivity {
 
         //init ui
         indoorLightSwitch = findViewById(R.id.switchIndoorLights);
-        outdoorLightSwitch = findViewById(R.id.switchOutdoorLights);
+        //outdoorLightSwitch = findViewById(R.id.switchOutdoorLights);
         fireAlarmSwitch = findViewById(R.id.switchFireAlarm);
         burglarAlarmSwitch = findViewById(R.id.switchBurglarAlarm);
-        tempValueText = findViewById(R.id.tempValueText);
+        //tempValueText = findViewById(R.id.tempValueText);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
@@ -70,7 +70,11 @@ public class HomeActivity extends AppCompatActivity {
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                indoorLightSwitch.setChecked((boolean) dataSnapshot.getValue());
+                if (dataSnapshot.getValue().toString().equals("true")){
+                    indoorLightSwitch.setChecked(true);
+                } else if(dataSnapshot.getValue().toString().equals("false")){
+                    indoorLightSwitch.setChecked(false);
+                }
                 Log.i(TAG, "onDataChange: " + dataSnapshot.getValue());
             }
 
@@ -98,6 +102,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        /*
         outdoorLightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -135,6 +140,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+        */
     }
 
     @Override

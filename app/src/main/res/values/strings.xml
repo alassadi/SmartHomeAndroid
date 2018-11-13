@@ -15,6 +15,7 @@
     <string name="indoorTextView">indoors</string>
     <string name="outdoorTextView">outdoors</string>
     <string name="atticTextView">attic</string>
+    <string name="indoorTV">indoor</string>
 
 
 </resources>
