@@ -16,7 +16,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
 
     //UI
-    private Button loginButton;
+    private Button loginButton, regButton;
     private ProgressBar progressBar;
     private EditText emailEditText, passwordEditText;
 
@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         loginButton = findViewById(R.id.loginButton);
+        regButton = findViewById(R.id.regButton);
         progressBar = findViewById(R.id.progressBar);
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
@@ -39,7 +40,18 @@ public class LoginActivity extends AppCompatActivity {
                 attemptLogin();
             }
         });
+
+        regButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // go to reg page
+                Intent intent = new Intent(getApplicationContext(), RegActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
+
 
     public void attemptLogin(){
 
@@ -52,6 +64,8 @@ public class LoginActivity extends AppCompatActivity {
 
         email = emailEditText.getText().toString();
         password = passwordEditText.getText().toString();
+
+        
 
         /*
         //disabled for faster testing

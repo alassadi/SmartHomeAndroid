@@ -118,7 +118,7 @@ public class HttpHandler {
 
             try {
                 //send POST request
-                URL url = new URL("https://us-central1-smarthome-3c6b9.cloudfunctions.net/updateDeviceThroughJson");
+                URL url = new URL("https://europe-west1-smarthome-3c6b9.cloudfunctions.net/updateDeviceThroughJson");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
 

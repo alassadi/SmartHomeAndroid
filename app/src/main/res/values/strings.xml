@@ -16,6 +16,8 @@
     <string name="outdoorTextView">outdoors</string>
     <string name="atticTextView">attic</string>
     <string name="indoorTV">indoor</string>
+    <string name="regBtn">Registration</string>
+    <string name="confirmBtn">Confirm</string>
 
 
 </resources>

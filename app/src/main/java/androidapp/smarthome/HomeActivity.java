@@ -141,6 +141,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         */
+
+        // remove later
+        burglarAlarmSwitch.setVisibility(View.INVISIBLE);
+        fireAlarmSwitch.setVisibility(View.INVISIBLE);
     }
 
     @Override
