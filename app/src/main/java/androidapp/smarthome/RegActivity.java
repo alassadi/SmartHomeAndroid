@@ -63,15 +63,10 @@ public class RegActivity extends AppCompatActivity {
 
                 if (checkValues()){
                     createJSONObject();
+                    new HttpHandler().requestCreateUser(jsonObject);
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
                 }
-
-                // NOW CREATE HTTP HANDLER STUFF
-
-                // save values into database
-
-                // go to login page
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
 
             }
         });
@@ -88,7 +83,7 @@ public class RegActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Email not valid", Toast.LENGTH_SHORT).show();
             return false;
         } else if (password.length() < 5){
-            Toast.makeText(getApplicationContext(), "Password need to be at least 6 characters", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Password need to be at least 5 characters", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

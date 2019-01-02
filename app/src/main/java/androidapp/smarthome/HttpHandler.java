@@ -172,13 +172,9 @@ public class HttpHandler {
                 dataOutputStream.flush();
                 dataOutputStream.close();
 
-
-                /*
-
-                Log.i(TAG, "post updateDeviceStatus: " + jsonObjects[0]);
+                Log.i(TAG, "post createUser: " + jsonObjects[0]);
                 Log.i(TAG, "server status: " + connection.getResponseCode());
                 Log.i(TAG, "server msg: " + connection.getResponseMessage());
-                 */
 
             } catch (MalformedURLException e){
                 Log.e(TAG, "MalformedURLException: " + e.getMessage());
@@ -186,50 +182,7 @@ public class HttpHandler {
                 Log.e(TAG, "IOException: " + e.getMessage());
             }
 
-
-
             return null;
-        }
-    }
-
-
-    public boolean requestPostCreateUser(JSONObject jsonObject) {
-
-        try {
-            // sen POST request
-            URL url = new URL("https://europe-west1-smarthome-3c6b9.cloudfunctions.net/createUser");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-
-            connection.setRequestProperty("Content-type", "application/json");
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setDoOutput(true);
-
-            DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream());
-            dataOutputStream.writeBytes(jsonObject.toString());
-            dataOutputStream.flush();
-            dataOutputStream.close();
-
-            jsonObject = new JSONObject(connection.getResponseMessage());
-
-            Log.i(TAG, "POST status " + jsonObject.toString());
-            Log.i(TAG, "server status: " + connection.getResponseCode());
-            Log.i(TAG, "server msg: " + connection.getResponseMessage());
-
-            return true;
-
-        } catch (MalformedURLException e){
-            System.err.println("error - url");
-            e.printStackTrace();
-            return false;
-        } catch (IOException e){
-            System.err.println("error - http url connection");
-            e.printStackTrace();
-            return false;
-        } catch (JSONException e){
-            System.out.println("error - response message");
-            e.printStackTrace();
-            return false;
         }
     }
 
