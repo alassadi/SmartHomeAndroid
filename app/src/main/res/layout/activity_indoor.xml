@@ -21,6 +21,7 @@
         />
 
     <TextView
+        android:id="@+id/tempText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/temp_text"
@@ -28,6 +29,39 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:textColor="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/tempValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/temp_value"
+        android:layout_toRightOf="@+id/tempText"
+        android:layout_toEndOf="@+id/tempText"
+        android:layout_alignTop="@+id/tempText"
+        android:textColor="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/electCons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/electricityConsumption"
+        android:textColor="@color/white"
+        android:layout_below="@id/tempText"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/electConsValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/electricityConsumptionValue"
+        android:textColor="@color/white"
+        android:layout_toRightOf="@+id/electCons"
+        android:layout_toEndOf="@+id/electCons"
+        android:layout_alignTop="@+id/electCons"
+
         />
 
     <Switch
@@ -67,6 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/switchIndoorLights"
         android:layout_alignLeft="@+id/switchIndoorLights"
+        android:layout_alignStart="@+id/switchIndoorLights"
         android:text="@string/burglar_alarm"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/progressBar"
@@ -81,7 +116,10 @@
         android:textColor="@color/white"
         android:layout_below="@id/switchFireAlarm"
         android:layout_toRightOf="@id/switchBurglarAlarm"
-        android:layout_alignLeft="@id/switchFireAlarm"/>
+        android:layout_toEndOf="@+id/switchBurglarAlarm"
+        android:layout_alignLeft="@id/switchFireAlarm"
+        android:layout_alignStart="@+id/switchFireAlarm"
+        />
 
     <Switch
         android:id="@+id/switchWindow"
@@ -90,7 +128,45 @@
         android:text="@string/windowSwitch"
         android:textColor="@color/white"
         android:layout_below="@id/switchBurglarAlarm"
+        android:layout_alignStart="@+id/switchBurglarAlarm"
         android:layout_alignLeft="@+id/switchBurglarAlarm"
+        />
+
+    <Switch
+        android:id="@+id/switchPowerOutage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/powerOutage"
+        android:textColor="@color/white"
+        android:layout_below="@id/switchStove"
+        android:layout_toRightOf="@id/switchWindow"
+        android:layout_toEndOf="@+id/switchWindow"
+        android:layout_alignLeft="@id/switchStove"
+        android:layout_alignStart="@+id/switchStove"
+        />
+
+    <Switch
+        android:id="@+id/switchTwilightSystem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/twilightSystem"
+        android:textColor="@color/white"
+        android:layout_below="@id/switchWindow"
+        android:layout_alignStart="@+id/switchWindow"
+        android:layout_alignLeft="@+id/switchWindow"
+        />
+
+    <Switch
+        android:id="@+id/radiator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/radiator"
+        android:textColor="@color/white"
+        android:layout_below="@id/switchPowerOutage"
+        android:layout_toRightOf="@id/switchTwilightSystem"
+        android:layout_toEndOf="@+id/switchTwilightSystem"
+        android:layout_alignLeft="@id/switchPowerOutage"
+        android:layout_alignStart="@+id/switchPowerOutage"
         />
 
     <ProgressBar
@@ -123,8 +199,6 @@
         android:layout_marginTop="30dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/smarthome_hp" />
-
-
 
 
 </RelativeLayout>
