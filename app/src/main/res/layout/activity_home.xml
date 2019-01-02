@@ -65,6 +65,7 @@
         android:scaleType="fitXY"
         app:srcCompat="@mipmap/attic3" />
 
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="100dp"

@@ -15,6 +15,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +34,8 @@ public class IndoorActivity extends AppCompatActivity {
 
     private static final String TAG = IndoorActivity.class.getSimpleName();
 
+    private String userAuthToken;
+
     //UI
     private Switch indoorLightSwitch, outdoorLightSwitch, fireAlarmSwitch, burglarAlarmSwitch;
     private TextView tempValueText;
@@ -40,6 +47,7 @@ public class IndoorActivity extends AppCompatActivity {
 
     //stores current JSONobject
     JSONObject jsonObject;
+
     //broadcast receiver
     BroadcastReceiver mBroadcastReceiver;
 
@@ -47,6 +55,7 @@ public class IndoorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indoor);
+
 
         //init ui
         indoorLightSwitch = findViewById(R.id.switchIndoorLights);
@@ -63,6 +72,23 @@ public class IndoorActivity extends AppCompatActivity {
         //init firebase database
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference("Devices/my9iXu6WvEgx5oNLLegs/enabled");
+
+        //init firebase auth for user auth token
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mUser.getIdToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        if (task.isSuccessful()) {
+                            userAuthToken = task.getResult().getToken();
+                            Log.i(TAG, "user token: " + userAuthToken);
+                            // Send token to your backend via HTTPS
+                            // ...
+                        } else {
+                            // Handle error -> task.getException();
+                            Log.d(TAG, task.getException().getMessage());
+                        }
+                    }
+                });
 
         //temporary solution used instead of cloud messaging
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
@@ -92,7 +118,7 @@ public class IndoorActivity extends AppCompatActivity {
                     jsonObject.put("id", "my9iXu6WvEgx5oNLLegs");
                     jsonObject.put("enabled", isChecked);
 
-                    new HttpHandler().requestUpdateDeviceStatus(jsonObject);
+                    new HttpHandler().requestUpdateDeviceStatus(jsonObject, userAuthToken);
 
                 } catch (JSONException e) {
                     Log.e(TAG, "error writing to JSONobject: + " + e.getMessage());
