@@ -4,9 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +15,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +42,9 @@ public class HomeActivity extends AppCompatActivity {
     //firebase database
     FirebaseDatabase mDatabase;
     DatabaseReference mDatabaseReference;
+
+    //firebase auth
+    FirebaseAuth mAuth;
 
     //stores current JSONobject
     JSONObject jsonObject;
@@ -66,6 +72,22 @@ public class HomeActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference("Devices/my9iXu6WvEgx5oNLLegs/enabled");
 
+        //init firebase auth
+
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mUser.getIdToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        if (task.isSuccessful()) {
+                            String idToken = task.getResult().getToken();
+                            // Send token to your backend via HTTPS
+                            // ...
+                            System.out.println("idtoken: " + idToken);
+                        } else {
+                            // Handle error -> task.getException();
+                        }
+                    }
+                });
         //temporary solution used instead of cloud messaging
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -76,6 +98,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, databaseError.getMessage());
             }
         });
 
@@ -152,7 +175,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         //unregister broadcast when activity is paused
-        unregisterReceiver(mBroadcastReceiver);
+         unregisterReceiver(mBroadcastReceiver);
     }
 
     //Receives firebase cloud notification

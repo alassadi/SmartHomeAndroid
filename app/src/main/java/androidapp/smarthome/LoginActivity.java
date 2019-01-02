@@ -2,6 +2,7 @@ package androidapp.smarthome;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -19,6 +25,9 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private ProgressBar progressBar;
     private EditText emailEditText, passwordEditText;
+
+    //firebase auth
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +39,21 @@ public class LoginActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
 
+        mAuth = FirebaseAuth.getInstance();
+
         progressBar.setVisibility(View.GONE);
 
         loginButton.setOnClickListener(
                 new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attemptLogin();
-            }
-        });
+                    @Override
+                    public void onClick(View v) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        attemptLogin();
+                    }
+                });
     }
 
-    public void attemptLogin(){
+    public void attemptLogin() {
 
         //reset errors
         emailEditText.setError(null);
@@ -53,96 +65,35 @@ public class LoginActivity extends AppCompatActivity {
         email = emailEditText.getText().toString();
         password = passwordEditText.getText().toString();
 
-        /*
-        //disabled for faster testing
-
-        if (!(email.contains("@") && email.length() > 5)){
+        if (!(email.contains("@") && email.length() > 5)) {
             //email invalid
             emailEditText.setError("email invalid, try again");
             cancel = true;
         }
 
-        if (!(password.length() > 4)){
+        if (!(password.length() > 4)) {
             passwordEditText.setError("password too short, try again");
             cancel = true;
         }
 
 
-        if (cancel){
-
-        }else {
-            progressBar.setVisibility(View.VISIBLE);
-            TaskUserLogin taskUserLogin = new TaskUserLogin(email, password);
-            taskUserLogin.execute((Void) null);
-        }
-        */
-
-        progressBar.setVisibility(View.VISIBLE);
-        TaskUserLogin taskUserLogin = new TaskUserLogin(email, password);
-        taskUserLogin.execute((Void) null);
-
-    }
-
-
-
-    public class TaskUserLogin extends AsyncTask<Void, Void, Boolean>{
-        private final String email;
-        private final String password;
-
-        public TaskUserLogin(String email, String password){
-            this.email = email;
-            this.password = password;
-        }
-
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            Log.i(TAG, "requestVerifyEmailAndPassword: " + email);
-            /*
-            send login request with HttpHandler
-            return true if login was verified
-            if(httpHandler.verifyEmail(email, password)){return true;}
-
-            */
-
-            try{
-                //simulate login verification
-                Thread.sleep(2000);
-            }catch (InterruptedException e){
-                Log.e(TAG, "InterruptedException: " + e.getMessage());
-            }
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean verified) {
-
-            if (verified){
-                Log.i(TAG, "email verified: " + email);
-                //start new activity
-                progressBar.setVisibility(View.GONE);
-                // FOR TRY: CHANGE BACK TO HomeActivity.class
-                Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
-                /*
-                intent.putExtra("user", email);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                */
-                startActivity(intent);
-                //finish() removes activity from activityStack
-                //finish();
-            }else {
-                Log.i(TAG, "email unverified: " + email);
-                passwordEditText.setError("Password is incorrect, try again");
-                passwordEditText.requestFocus();
-
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            Toast.makeText(getApplicationContext(), "login cancelled", Toast.LENGTH_SHORT);
+        if (cancel) {
+            Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
+        } else {
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
+                        startActivity(intent);
+                        System.out.println("user: " + mAuth.getUid());
+                    } else {
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    }
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
         }
     }
-
-
 }
