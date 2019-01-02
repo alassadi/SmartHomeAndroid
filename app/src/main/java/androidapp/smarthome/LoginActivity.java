@@ -65,9 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         email = emailEditText.getText().toString();
         password = passwordEditText.getText().toString();
 
-        
-
-        /*
+       /*
         //disabled for faster testing
 
         if (!(email.contains("@") && email.length() > 5)){
@@ -89,8 +87,8 @@ public class LoginActivity extends AppCompatActivity {
             TaskUserLogin taskUserLogin = new TaskUserLogin(email, password);
             taskUserLogin.execute((Void) null);
         }
-        */
 
+        */
         progressBar.setVisibility(View.VISIBLE);
         TaskUserLogin taskUserLogin = new TaskUserLogin(email, password);
         taskUserLogin.execute((Void) null);
@@ -112,6 +110,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... voids) {
             Log.i(TAG, "requestVerifyEmailAndPassword: " + email);
+
             /*
             send login request with HttpHandler
             return true if login was verified
@@ -135,8 +134,8 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i(TAG, "email verified: " + email);
                 //start new activity
                 progressBar.setVisibility(View.GONE);
-                // FOR TRY: CHANGE BACK TO HomeActivity.class
-                Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
+                // FOR TRY: CHANGE BACK TO IndoorActivity.class
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 /*
                 intent.putExtra("user", email);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

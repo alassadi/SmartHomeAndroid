@@ -11,7 +11,7 @@
         android:id="@+id/firstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="20dp"
         android:text="First name" />
@@ -27,7 +27,7 @@
         android:id="@+id/lastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:layout_margin="5dp"
         android:layout_below="@+id/firstName"
         android:layout_marginLeft="5dp"
@@ -44,7 +44,7 @@
         android:id="@+id/phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:layout_margin="5dp"
         android:layout_below="@+id/lastName"
         android:layout_marginLeft="5dp"
@@ -61,7 +61,7 @@
         android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:layout_margin="5dp"
         android:layout_below="@+id/phone"
         android:layout_marginLeft="5dp"
@@ -78,7 +78,7 @@
         android:id="@+id/address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:layout_margin="5dp"
         android:layout_below="@+id/email"
         android:layout_marginLeft="5dp"
@@ -95,7 +95,7 @@
         android:id="@+id/postalCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:layout_margin="5dp"
         android:layout_below="@+id/address"
         android:layout_marginLeft="5dp"
@@ -112,7 +112,7 @@
         android:id="@+id/city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:layout_margin="5dp"
         android:layout_below="@+id/postalCode"
         android:layout_marginLeft="5dp"
@@ -129,7 +129,7 @@
         android:id="@+id/country"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:layout_margin="5dp"
         android:layout_below="@+id/city"
         android:layout_marginLeft="5dp"
@@ -146,7 +146,7 @@
         android:id="@+id/gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:layout_margin="5dp"
         android:layout_below="@+id/country"
         android:layout_marginLeft="5dp"
@@ -163,7 +163,7 @@
         android:id="@+id/bday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:layout_margin="5dp"
         android:layout_below="@+id/gender"
         android:layout_marginLeft="5dp"
@@ -176,12 +176,29 @@
         android:layout_toRightOf="@+id/bday"
         android:layout_below="@+id/gender"/>
 
+    <TextView
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/bday"
+        android:layout_marginLeft="5dp"
+        android:text="Password"/>
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/password"
+        android:layout_below="@+id/bday"/>
+
     <Button
         android:id="@+id/confirmBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/confirmBtn"
-        android:layout_below="@id/bdayEditText"
+        android:layout_below="@id/password"
         android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
