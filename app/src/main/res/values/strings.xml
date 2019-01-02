@@ -1,18 +1,26 @@
 <resources>
     <string name="app_name">SmartHome</string>
+    <string name="atticBtn">atticBtn</string>
+    <string name="atticTextView">attic</string>
+    <string name="burglar_alarm">Burglar Alarm</string>
+    <string name="confirmBtn">Confirm</string>
     <string name="email_prompt">Enter email address</string>
-    <string name="password_prompt">Enter password</string>
-    <string name="sign_in">Sign in</string>
+    <string name="fire_alarm">Fire Alarm</string>
+    <string name="indoorBtn">indoorBtn</string>
     <string name="indoor_lights">Indoor lights</string>
+    <string name="indoorTextView">indoors</string>
+    <string name="indoorTV">indoor</string>
+    <string name="outdoorBtn">outdoorBtn</string>
     <string name="outdoor_lights">Outdoor lights</string>
+    <string name="outdoorText">Outdoor</string>
+    <string name="password_prompt">Enter password</string>
+    <string name="regBtn">Registration</string>
+    <string name="sign_in">Sign in</string>
+    <string name="stoveSwitch">Stove</string>
     <string name="temp_text">Temperature: </string>
     <string name="temp_value"></string>
-    <string name="fire_alarm">Fire Alarm</string>
-    <string name="burglar_alarm">Burglar Alarm</string>
-    <string name="indoorBtn">indoorBtn</string>
-    <string name="outdoorBtn">outdoorBtn</string>
-    <string name="atticBtn">atticBtn</string>
-    <string name="indoorTextView">indoors</string>
-    <string name="outdoorTextView">outdoors</string>
-    <string name="atticTextView">attic</string>
+    <string name="windowSwitch">Window</string>
+
+
+>>>>>>> b3bb086a5f6294c0f6994e8a3930a4d818d99d30
 </resources>

@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
 
     //UI
-    private Button loginButton;
+    private Button loginButton, regButton;
     private ProgressBar progressBar;
     private EditText emailEditText, passwordEditText;
 
@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         loginButton = findViewById(R.id.loginButton);
+        regButton = findViewById(R.id.regButton);
         progressBar = findViewById(R.id.progressBar);
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
@@ -51,9 +52,21 @@ public class LoginActivity extends AppCompatActivity {
                         attemptLogin();
                     }
                 });
+
+        regButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // go to reg page
+                Intent intent = new Intent(getApplicationContext(), RegActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-    public void attemptLogin() {
+
+
+
+    public void attemptLogin(){
 
         //reset errors
         emailEditText.setError(null);
@@ -65,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         email = emailEditText.getText().toString();
         password = passwordEditText.getText().toString();
 
-        if (!(email.contains("@") && email.length() > 5)) {
+        if (!(email.contains("@") && email.length() > 5)){
             //email invalid
             emailEditText.setError("email invalid, try again");
             cancel = true;
@@ -76,7 +89,6 @@ public class LoginActivity extends AppCompatActivity {
             cancel = true;
         }
 
-
         if (cancel) {
             Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
         } else {
@@ -84,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(intent);
                         System.out.println("user: " + mAuth.getUid());
                     } else {
@@ -94,6 +106,9 @@ public class LoginActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                 }
             });
-        }
+
     }
+
+        }
+
 }
