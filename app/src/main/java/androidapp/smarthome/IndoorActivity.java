@@ -34,6 +34,8 @@ public class IndoorActivity extends AppCompatActivity {
 
     private static final String TAG = IndoorActivity.class.getSimpleName();
 
+    private String userAuthToken;
+
     //UI
     private Switch indoorLightSwitch, outdoorLightSwitch, fireAlarmSwitch, burglarAlarmSwitch;
     private TextView tempValueText;
@@ -45,6 +47,7 @@ public class IndoorActivity extends AppCompatActivity {
 
     //stores current JSONobject
     JSONObject jsonObject;
+
     //broadcast receiver
     BroadcastReceiver mBroadcastReceiver;
 
@@ -70,18 +73,19 @@ public class IndoorActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference("Devices/my9iXu6WvEgx5oNLLegs/enabled");
 
-        //init firebase auth for user token
+        //init firebase auth for user auth token
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
         mUser.getIdToken(true)
                 .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
                         if (task.isSuccessful()) {
-                            String idToken = task.getResult().getToken();
+                            userAuthToken = task.getResult().getToken();
+                            Log.i(TAG, "user token: " + userAuthToken);
                             // Send token to your backend via HTTPS
                             // ...
-                            System.out.println("idtoken: " + idToken);
                         } else {
                             // Handle error -> task.getException();
+                            Log.d(TAG, task.getException().getMessage());
                         }
                     }
                 });
@@ -114,7 +118,7 @@ public class IndoorActivity extends AppCompatActivity {
                     jsonObject.put("id", "my9iXu6WvEgx5oNLLegs");
                     jsonObject.put("enabled", isChecked);
 
-                    new HttpHandler().requestUpdateDeviceStatus(jsonObject);
+                    new HttpHandler().requestUpdateDeviceStatus(jsonObject, userAuthToken);
 
                 } catch (JSONException e) {
                     Log.e(TAG, "error writing to JSONobject: + " + e.getMessage());
