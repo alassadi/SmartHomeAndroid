@@ -36,9 +36,11 @@ public class IndoorActivity extends AppCompatActivity {
 
     private String userAuthToken;
 
+    private String indoor_id, temp_id, fireAlarm_id, waterLeakage_id, door_id, window_id, lamp_id;
+
     //UI
-    private Switch indoorLightSwitch, outdoorLightSwitch, fireAlarmSwitch, burglarAlarmSwitch;
-    private TextView tempValueText;
+    private Switch indoorLightSwitch, fireAlarmSwitch, waterLeakageSwitch, doorSwitch, windowSwitch, stoveSwitch, radiatorSwitch;
+    private TextView tempValue;
     private ProgressBar progressBar;
 
     //firebase database
@@ -59,10 +61,13 @@ public class IndoorActivity extends AppCompatActivity {
 
         //init ui
         indoorLightSwitch = findViewById(R.id.switchIndoorLights);
-        //outdoorLightSwitch = findViewById(R.id.switchOutdoorLights);
         fireAlarmSwitch = findViewById(R.id.switchFireAlarm);
-        burglarAlarmSwitch = findViewById(R.id.switchBurglarAlarm);
-        //tempValueText = findViewById(R.id.tempValueText);
+        waterLeakageSwitch = findViewById(R.id.switchWaterLeakage);
+        doorSwitch = findViewById(R.id.switchDoor);
+        windowSwitch = findViewById(R.id.switchWindow);
+        stoveSwitch = findViewById(R.id.switchStove);
+        radiatorSwitch = findViewById(R.id.switchRadiator);
+
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
@@ -71,7 +76,7 @@ public class IndoorActivity extends AppCompatActivity {
 
         //init firebase database
         mDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mDatabase.getReference("Devices/my9iXu6WvEgx5oNLLegs/enabled");
+        mDatabaseReference = mDatabase.getReference("Devices/my9iXu6WvEgx5oNLLegs/value");
 
         //init firebase auth for user auth token
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -116,7 +121,7 @@ public class IndoorActivity extends AppCompatActivity {
                     //@TODO get user id from firebase authentication when logged in.
                     jsonObject = new JSONObject();
                     jsonObject.put("id", "my9iXu6WvEgx5oNLLegs");
-                    jsonObject.put("enabled", isChecked);
+                    jsonObject.put("value", isChecked);
 
                     new HttpHandler().requestUpdateDeviceStatus(jsonObject, userAuthToken);
 
