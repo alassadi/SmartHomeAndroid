@@ -31,8 +31,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".IndoorActivity"></activity>
         <activity android:name=".HomeActivity"></activity>
-        <activity android:name=".RoomActivity"></activity>
+        <activity android:name=".RegActivity"></activity>
+        <activity android:name=".AtticActivity"></activity>
+        <activity android:name=".OutdoorActivity"></activity>
     </application>
 
 </manifest>

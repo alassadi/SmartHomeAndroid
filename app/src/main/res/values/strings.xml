@@ -1,21 +1,42 @@
 <resources>
+    <string name="address">Address: </string>
     <string name="app_name">SmartHome</string>
-    <string name="email_prompt">Enter email address</string>
-    <string name="password_prompt">Enter password</string>
-    <string name="sign_in">Sign in</string>
-    <string name="indoor_lights">Indoor lights</string>
-    <string name="outdoor_lights">Outdoor lights</string>
-    <string name="temp_text">Temperature: </string>
-    <string name="temp_value"></string>
-    <string name="fire_alarm">Fire Alarm</string>
-    <string name="burglar_alarm">Burglar Alarm</string>
-    <string name="indoorBtn">indoorBtn</string>
-    <string name="outdoorBtn">outdoorBtn</string>
     <string name="atticBtn">atticBtn</string>
-    <string name="indoorTextView">indoors</string>
-    <string name="outdoorTextView">outdoors</string>
-    <string name="atticTextView">attic</string>
+    <string name="atticFan">Fan</string>
+    <string name="atticTextView">Attic</string>
+    <string name="burglar_alarm">Burglar Alarm</string>
+    <string name="celsius"> C°</string>
+    <string name="city">City: </string>
+    <string name="confirmBtn">Confirm</string>
+    <string name="country">Country: </string>
+    <string name="dateOfBirth">Date of Birth: </string>
+    <string name="door">Door</string>
+    <string name="electricityConsumption">Electricity Consumption: </string>
+    <string name="electricityConsumptionValue">x</string>
+    <string name="email_prompt">Enter email address</string>
+    <string name="email">Email: </string>
+    <string name="fire_alarm">Fire Alarm</string>
+    <string name="firstName">First Name: </string>
+    <string name="gender">Gender: </string>
+    <string name="indoorBtn">indoorBtn</string>
+    <string name="indoor_lights">Indoor lights</string>
+    <string name="indoorTextView">Indoor</string>
     <string name="indoorTV">indoor</string>
-
+    <string name="lastName">Last Name: </string>
+    <string name="outdoorBtn">outdoorBtn</string>
+    <string name="outdoor_lights">Outdoor lights</string>
+    <string name="outdoorText">Outdoor</string>
+    <string name="password_prompt">Enter password</string>
+    <string name="password">Password: </string>
+    <string name="phone">Phone: </string>
+    <string name="postalCode">Postal Code: </string>
+    <string name="radiator">Radiator</string>
+    <string name="regBtn">Registration</string>
+    <string name="sign_in">Sign in</string>
+    <string name="stoveSwitch">Stove</string>
+    <string name="temp_text">Temperature: </string>
+    <string name="temp_value">x</string>
+    <string name="waterLeakage">Water Leakage</string>
+    <string name="windowSwitch">Window</string>
 
 </resources>

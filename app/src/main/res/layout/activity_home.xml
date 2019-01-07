@@ -1,82 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
 
-    tools:context=".HomeActivity"
-    tools:layout_editor_absoluteY="81dp">
+    android:background="@color/black">
 
-    <Switch
-        android:id="@+id/switchIndoorLights"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="39dp"
-        android:layout_marginLeft="39dp"
-        android:layout_marginTop="332dp"
-        android:text="@string/indoor_lights"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/progressBar"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Switch
-        android:id="@+id/switchFireAlarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="81dp"
-        android:layout_marginLeft="81dp"
-        android:layout_marginTop="334dp"
-        android:layout_toEndOf="@+id/switchIndoorLights"
-        android:layout_toRightOf="@+id/switchIndoorLights"
-        android:text="@string/fire_alarm"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/switchBurglarAlarm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/progressBar" />
-
-    <Switch
-        android:id="@+id/switchBurglarAlarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/switchIndoorLights"
-        android:layout_alignStart="@+id/switchIndoorLights"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="-2dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="120dp"
-        android:text="@string/burglar_alarm"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
-        app:layout_constraintStart_toStartOf="@+id/switchFireAlarm"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/indoorButton"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="168dp"
-        android:layout_marginLeft="168dp"
-        android:layout_marginTop="180dp"
-        android:layout_marginEnd="168dp"
-        android:layout_marginRight="168dp"
-        android:layout_marginBottom="285dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/switchFireAlarm"
-        app:layout_constraintStart_toEndOf="@+id/switchIndoorLights"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="42dp"
+        android:layout_marginLeft="42dp"
+        android:layout_marginTop="226dp"
+        android:layout_marginEnd="276dp"
+        android:layout_marginRight="276dp"
+        android:background="@color/black"
+        android:contentDescription="@string/indoorBtn"
+        android:onClick="indoorPressed"
+        android:scaleType="fitXY"
+        app:srcCompat="@mipmap/indoor3" />
+
+    <ImageButton
+        android:id="@+id/outdoorButton"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="157dp"
+        android:layout_marginLeft="157dp"
+        android:layout_marginTop="226dp"
+        android:layout_marginEnd="166dp"
+        android:layout_marginRight="166dp"
+        android:background="@color/black"
+        android:contentDescription="@string/outdoorBtn"
+        android:onClick="outdoorPressed"
+        android:scaleType="fitXY"
+        app:srcCompat="@mipmap/outdoor3" />
+
+    <ImageButton
+        android:id="@+id/atticButton"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="274dp"
+        android:layout_marginLeft="274dp"
+        android:layout_marginTop="224dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginRight="46dp"
+        android:background="@color/black"
+        android:contentDescription="@string/atticBtn"
+        android:scaleType="fitXY"
+        android:onClick="atticPressed"
+        app:srcCompat="@mipmap/attic3" />
+
 
     <ImageView
         android:id="@+id/imageView2"
@@ -101,23 +91,48 @@
         app:srcCompat="@drawable/smarthome_hp" />
 
     <TextView
-        android:id="@+id/indoorText"
+        android:id="@+id/indoorTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="175dp"
-        android:layout_marginLeft="175dp"
-        android:layout_marginTop="212dp"
-        android:layout_marginEnd="163dp"
-        android:layout_marginRight="163dp"
-        android:layout_marginBottom="264dp"
-        android:text="@string/indoorTV"
-        android:textColor="@color/common_google_signin_btn_text_dark_default"
-        tools:text="@string/indoorTextView" />
+        android:text="@string/indoorTextView"
+        android:textColor="@color/white"
+        android:layout_below="@+id/indoorButton"
+        android:layout_alignLeft="@+id/indoorButton"
+        android:layout_alignStart="@+id/indoorButton"
+        android:layout_alignEnd="@+id/indoorButton"
+        android:layout_alignRight="@+id/indoorButton"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/outdoorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/outdoorText"
+        android:textColor="@color/white"
+        android:layout_below="@+id/outdoorButton"
+        android:layout_alignLeft="@+id/outdoorButton"
+        android:layout_alignStart="@+id/outdoorButton"
+        android:layout_alignEnd="@+id/outdoorButton"
+        android:layout_alignRight="@+id/outdoorButton"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/atticTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/atticTextView"
+        android:textColor="@color/white"
+        android:layout_below="@+id/atticButton"
+        android:layout_alignLeft="@+id/atticButton"
+        android:layout_alignStart="@+id/atticButton"
+        android:layout_alignEnd="@+id/atticButton"
+        android:layout_alignRight="@+id/atticButton"
+        android:gravity="center"
+        />
+
+
+
 
 </RelativeLayout>
