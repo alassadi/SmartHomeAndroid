@@ -98,8 +98,8 @@ public class RegActivity extends AppCompatActivity {
             jsonObject.put("email", email);
             jsonObject.put("password", password);
             jsonObject.put("phone", phone);
-            jsonObject.put("address", address);
             jsonObject.put("postal_code", postCode);
+            jsonObject.put("address", address);
             jsonObject.put("city", city);
             jsonObject.put("country", country);
             jsonObject.put("date_of_birth", dateOfBirth);

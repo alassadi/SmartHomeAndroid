@@ -177,7 +177,7 @@ public class HttpHandler {
 
             try {
                 // send post request
-                URL url = new URL("https://europe-west1-smarthome-3c6b9.cloudfunctions.net/createUser");
+                URL url = new URL("https://europe-west1-smarthome-3c6b9.cloudfunctions.net/users/");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
 
