@@ -27,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import org.json.JSONException;
@@ -105,6 +106,9 @@ public class IndoorActivity extends AppCompatActivity {
                     }
                 });
 
+
+
+
         //listen for changes in database
         mDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -118,10 +122,6 @@ public class IndoorActivity extends AppCompatActivity {
                 String room_id = dataSnapshot.child("room_id").getValue().toString();
                 String name = dataSnapshot.child("name").getValue().toString();
                 String value = dataSnapshot.child("value").getValue().toString();
-
-                System.out.println("room_id: " + room_id);
-                System.out.println("name: " + name);
-                System.out.println("value: " + value);
 
                 if (room_id.equals(ID_INDOOR)) {
                     switch (name) {
