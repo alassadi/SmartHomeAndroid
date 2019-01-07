@@ -23,6 +23,7 @@
         />
 
     <TextView
+        android:id="@+id/tempText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/temp_text"
@@ -30,6 +31,27 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:textColor="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/tempValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/temp_value"
+        android:layout_toRightOf="@+id/tempText"
+        android:layout_toEndOf="@+id/tempText"
+        android:layout_alignTop="@+id/tempText"
+        android:textColor="@color/white"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/celsius"
+        android:textColor="@color/white"
+        android:layout_toRightOf="@+id/tempValue"
+        android:layout_toEndOf="@+id/tempValue"
+        android:layout_alignTop="@+id/tempValue"
         />
 
     <Switch
@@ -59,17 +81,18 @@
         android:layout_toRightOf="@+id/switchIndoorLights"
         android:text="@string/fire_alarm"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/switchBurglarAlarm"
+        app:layout_constraintBottom_toBottomOf="@+id/switchDoor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/progressBar" />
 
     <Switch
-        android:id="@+id/switchBurglarAlarm"
+        android:id="@+id/switchDoor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/switchIndoorLights"
         android:layout_alignLeft="@+id/switchIndoorLights"
-        android:text="@string/burglar_alarm"
+        android:layout_alignStart="@+id/switchIndoorLights"
+        android:text="@string/door"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/progressBar"
         app:layout_constraintStart_toStartOf="@+id/switchFireAlarm"
@@ -82,8 +105,11 @@
         android:text="@string/stoveSwitch"
         android:textColor="@color/white"
         android:layout_below="@id/switchFireAlarm"
-        android:layout_toRightOf="@id/switchBurglarAlarm"
-        android:layout_alignLeft="@id/switchFireAlarm"/>
+        android:layout_toRightOf="@id/switchDoor"
+        android:layout_toEndOf="@+id/switchDoor"
+        android:layout_alignLeft="@id/switchFireAlarm"
+        android:layout_alignStart="@+id/switchFireAlarm"
+        />
 
     <Switch
         android:id="@+id/switchWindow"
@@ -91,8 +117,33 @@
         android:layout_height="wrap_content"
         android:text="@string/windowSwitch"
         android:textColor="@color/white"
-        android:layout_below="@id/switchBurglarAlarm"
-        android:layout_alignLeft="@+id/switchBurglarAlarm"
+        android:layout_below="@id/switchDoor"
+        android:layout_alignStart="@+id/switchDoor"
+        android:layout_alignLeft="@+id/switchDoor"
+        />
+
+    <Switch
+        android:id="@+id/switchWaterLeakage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/waterLeakage"
+        android:textColor="@color/white"
+        android:layout_below="@id/switchStove"
+        android:layout_toRightOf="@id/switchWindow"
+        android:layout_toEndOf="@+id/switchWindow"
+        android:layout_alignLeft="@id/switchStove"
+        android:layout_alignStart="@+id/switchStove"
+        />
+
+    <Switch
+        android:id="@+id/switchRadiator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/radiator"
+        android:textColor="@color/white"
+        android:layout_below="@id/switchWindow"
+        android:layout_alignStart="@+id/switchWindow"
+        android:layout_alignLeft="@+id/switchWindow"
         />
 
     <ProgressBar
@@ -125,8 +176,6 @@
         android:layout_marginTop="30dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/smarthome_hp" />
-
-
 
 
 </RelativeLayout>
