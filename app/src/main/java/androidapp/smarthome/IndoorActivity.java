@@ -98,7 +98,7 @@ public class IndoorActivity extends AppCompatActivity {
                             userAuthToken = task.getResult().getToken();
                             Log.i(TAG, "user token: " + userAuthToken);
 
-                            new updateUi(ID_INDOOR, userAuthToken).execute();
+                            new IndoorActivity.updateUi(ID_INDOOR, userAuthToken).execute();
                         } else {
                             Log.d(TAG, task.getException().getMessage());
                         }
