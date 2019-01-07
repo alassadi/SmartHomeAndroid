@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,11 +34,16 @@ import org.json.JSONObject;
 public class IndoorActivity extends AppCompatActivity {
 
     private static final String TAG = IndoorActivity.class.getSimpleName();
+    private static final String ID_INDOOR = "xXKPpHKTbMWCXDluthqz";
+    private static final String ID_INDOOR_LIGHT = "my9iXu6WvEgx5oNLLegs";
+    private static final String ID_ALARM_FIRE = "";
+    private static final String ID_ALARM_BURGLAR = "";
+
 
     private String userAuthToken;
 
     //UI
-    private Switch indoorLightSwitch, outdoorLightSwitch, fireAlarmSwitch, burglarAlarmSwitch;
+    private static Switch indoorLightSwitch, fireAlarmSwitch, burglarAlarmSwitch;
     private TextView tempValueText;
     private ProgressBar progressBar;
 
@@ -46,7 +52,7 @@ public class IndoorActivity extends AppCompatActivity {
     DatabaseReference mDatabaseReference;
 
     //stores current JSONobject
-    JSONObject jsonObject;
+    static JSONObject jsonObject;
 
     //broadcast receiver
     BroadcastReceiver mBroadcastReceiver;
@@ -59,7 +65,6 @@ public class IndoorActivity extends AppCompatActivity {
 
         //init ui
         indoorLightSwitch = findViewById(R.id.switchIndoorLights);
-        //outdoorLightSwitch = findViewById(R.id.switchOutdoorLights);
         fireAlarmSwitch = findViewById(R.id.switchFireAlarm);
         burglarAlarmSwitch = findViewById(R.id.switchBurglarAlarm);
         //tempValueText = findViewById(R.id.tempValueText);
@@ -91,12 +96,13 @@ public class IndoorActivity extends AppCompatActivity {
                 });
 
         //temporary solution used instead of cloud messaging
+        /*
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue().toString().equals("true")){
+                if (dataSnapshot.getValue().toString().equals("true")) {
                     indoorLightSwitch.setChecked(true);
-                } else if(dataSnapshot.getValue().toString().equals("false")){
+                } else if (dataSnapshot.getValue().toString().equals("false")) {
                     indoorLightSwitch.setChecked(false);
                 }
                 Log.i(TAG, "onDataChange: " + dataSnapshot.getValue());
@@ -106,20 +112,13 @@ public class IndoorActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
-        //updateUi();
+        */
 
         indoorLightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    //@TODO get user id from firebase authentication when logged in.
-                    jsonObject = new JSONObject();
-                    jsonObject.put("id", "my9iXu6WvEgx5oNLLegs");
-                    jsonObject.put("enabled", isChecked);
-
-                    new HttpHandler().requestUpdateDeviceStatus(jsonObject, userAuthToken);
-
+                    updateDeviceState(ID_INDOOR_LIGHT, isChecked);
                 } catch (JSONException e) {
                     Log.e(TAG, "error writing to JSONobject: + " + e.getMessage());
                 }
@@ -127,24 +126,11 @@ public class IndoorActivity extends AppCompatActivity {
         });
 
         /*
-        outdoorLightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                try {
-                    jsonObject.put("outdoorLights", isChecked);
-                    //new request
-                } catch (JSONException e) {
-                    Log.e(TAG, "error writing to JSONobject: + " + e.getMessage());
-                }
-            }
-        });
-
         fireAlarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    jsonObject.put("fireAlarm", isChecked);
-                    //new request
+                    updateDeviceState(ID_INDOOR_FIREALARM, isChecked);
                 } catch (JSONException e) {
                     Log.e(TAG, "error writing to JSONObject: + " + e.getMessage());
                 }
@@ -155,9 +141,7 @@ public class IndoorActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    jsonObject.put("burglarAlarm", isChecked);
-                    //new request
-
+                    updateDeviceState(ID_ALARM_BURGLAR, isChecked);
                 } catch (JSONException e) {
                     Log.e(TAG, "error writing to JSONObject: + " + e.getMessage());
                 }
@@ -165,9 +149,14 @@ public class IndoorActivity extends AppCompatActivity {
         });
         */
 
-        // remove later
-        //burglarAlarmSwitch.setVisibility(View.INVISIBLE);
-        //fireAlarmSwitch.setVisibility(View.INVISIBLE);
+        new updateUi().execute();
+    }
+
+    public void updateDeviceState(String id, Boolean isChecked) throws JSONException {
+        jsonObject = new JSONObject();
+        jsonObject.put("id", id);
+        jsonObject.put("enabled", isChecked);
+        new HttpHandler().requestUpdateDeviceStatus(jsonObject, userAuthToken);
     }
 
     @Override
@@ -200,17 +189,18 @@ public class IndoorActivity extends AppCompatActivity {
     }
 
 
-
-    /*
     //requires getDeviceStatus endpoint before implementation can be done
-    private class updateUi extends AsyncTask<Void, Void, Void> {
+    public static class updateUi extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            //getDeviceStatus
-            //JSONObject jsonObject = new JSONObject();
-            //HttpHandler httpHandler = new HttpHandler();
-            //jsonObject = httpHandler.requestGetDeviceStatus();
+            try {
+                JSONObject json = new JSONObject();
+                json.put("room", ID_INDOOR);
+                jsonObject = new HttpHandler().requestGetRoomDevices(json);
+            } catch (JSONException e) {
+                Log.d(TAG, e.getMessage());
+            }
             return null;
         }
 
@@ -218,7 +208,11 @@ public class IndoorActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             try {
                 //update ui
-                    indoorLightSwitch.setChecked(jsonObject.getBoolean("enabled"));
+                System.out.println("json:" + jsonObject);
+                //todo: loop through all the devices as JSONarray?
+                //current solution only updates indoor lights
+                JSONObject json = (JSONObject) jsonObject.get(ID_INDOOR_LIGHT);
+                indoorLightSwitch.setChecked(json.getBoolean("enabled"));
 
 //not required for first presentation
 //                if (jsonObject != null) {
@@ -233,6 +227,6 @@ public class IndoorActivity extends AppCompatActivity {
             }
         }
     }
-    */
+
 
 }

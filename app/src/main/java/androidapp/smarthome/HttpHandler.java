@@ -4,8 +4,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -20,27 +22,43 @@ public class HttpHandler {
 
 
     //getDeviceStatus endpoint not working yet
-    public JSONObject requestGetDeviceStatus(JSONObject jsonObject) {
+    public JSONObject requestGetRoomDevices(JSONObject jsonObject) {
         try {
             //send GET request
-            URL url = new URL("https://us-central1-smarthome-3c6b9.cloudfunctions.net/getDeviceStatus");
+            URL url = new URL("https://europe-west1-smarthome-3c6b9.cloudfunctions.net/devices");
+            StringBuffer response = new StringBuffer();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            connection.setRequestMethod("POST");
 
             connection.setRequestProperty("Content-type", "application/json");
             connection.setRequestProperty("Accept", "application/json");
             connection.setDoOutput(true);
+            connection.setDoInput(true);
 
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             out.writeBytes(jsonObject.toString());
             out.flush();
             out.close();
 
-            jsonObject = new JSONObject(connection.getResponseMessage());
+            int status = connection.getResponseCode();
+            if (status != 200){
+                throw new IOException("requestGetRoomDevices failed");
+            }else{
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                while((inputLine = in.readLine()) != null){
+                    response.append(inputLine);
+                }
+                in.close();
+            }
+            Log.i(TAG, "response: " + response);
+            //jsonObject = new JSONObject(connection.getResponseMessage());
+            jsonObject = new JSONObject(response.toString());
 
             Log.i(TAG, "GET device status " + jsonObject.toString());
             Log.i(TAG, "server status: " + connection.getResponseCode());
             Log.i(TAG, "server msg: " + connection.getResponseMessage());
+
 
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
@@ -113,7 +131,6 @@ public class HttpHandler {
         String auth;
         public taskUpdateDeviceStatus(String auth){
             this.auth = auth;
-            System.out.println("task auth: "+ auth);
         }
 
         @Override
@@ -126,7 +143,6 @@ public class HttpHandler {
                 connection.setRequestMethod("PUT");
 
                 connection.setRequestProperty("Content-type", "application/json");
-                //connection.setRequestProperty("Accept", "application/json");
                 connection.setRequestProperty("Authorization", "Bearer " + auth);
                 connection.setDoOutput(true);
                 connection.setDoInput(true);
